@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  WeatherScan
+
+  Created by Toni Järvinen on 1.10.2020.
+  
+*/
+
+"fetcing_data" = "Fetching Data...";

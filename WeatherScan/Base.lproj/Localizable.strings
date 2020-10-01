@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  WeatherScan
+
+  Created by Toni Järvinen on 1.10.2020.
+  
+*/
+
+"fetching_data" = "Fetching Data...";
+"temperature_format" = "%.1f°C";
+"no_data" = "No data";
+"latest_temperature" = "Latest temperature";
+"24h_max_temperature" = "24h max temperature";
+"24h_min_temperature" = "24h min temperature";
+"temperature_submitted" = "Temperature submitted";
+"invalid_temperature" = "Invalid temperature, please check the value";
+"send" = "Send";
+"cancel" = "Cancel";
