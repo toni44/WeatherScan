@@ -43,7 +43,9 @@ class WeatherService {
             if let strongSelf = self {
                 strongSelf.delegate?.weatherService(strongSelf, didRefresh: locations)
             }
-            self?.persister.persist(data: locations, into: locationsFilename)
+            DispatchQueue.global(qos: .background).async {
+                self?.persister.persist(data: locations, into: locationsFilename)
+            }
         }, error: nil)
     }
     
@@ -53,7 +55,9 @@ class WeatherService {
             if let strongSelf = self {
                 strongSelf.delegate?.weatherService(strongSelf, didRefresh: observations)
             }
-            self?.persister.persist(data: observations, into: observationsFilename)
+            DispatchQueue.global(qos: .background).async {
+                self?.persister.persist(data: observations, into: observationsFilename)
+            }
         }, error: nil)
     }
     
