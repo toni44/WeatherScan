@@ -6,10 +6,14 @@
 //
 
 import UIKit
+import CoreLocation
 
-class MainViewController: UITableViewController, WeatherServiceDelegate {
+class MainViewController: UITableViewController, WeatherServiceDelegate, CLLocationManagerDelegate {
     var weatherService: WeatherService?
+    var locationManager: CLLocationManager!
+
     private var locations: [Location] = []
+    private var currentLocation: CLLocation?
     
     private let weatherCellIdentifier = "Weather Location Cell"
     private let locationDetailsVCIdentifier = "LocationDetailsVC"
@@ -17,6 +21,14 @@ class MainViewController: UITableViewController, WeatherServiceDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.separatorStyle = .none
+        
+        if (CLLocationManager.locationServicesEnabled()) {
+            locationManager = CLLocationManager()
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.startUpdatingLocation()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -49,6 +61,7 @@ class MainViewController: UITableViewController, WeatherServiceDelegate {
         if let vc = storyboard.instantiateViewController(withIdentifier: locationDetailsVCIdentifier) as? LocationDetailsViewController {
             vc.location = locations[indexPath.row]
             vc.weatherService = weatherService
+            vc.currentLocation = currentLocation
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -60,6 +73,13 @@ class MainViewController: UITableViewController, WeatherServiceDelegate {
     
     func weatherService(_ weatherService: WeatherService, didRefresh observations: [Observation]) {
         tableView.reloadData()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        currentLocation = locations.last
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
     }
 }
 

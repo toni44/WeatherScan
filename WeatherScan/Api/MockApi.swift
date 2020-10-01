@@ -9,11 +9,11 @@ import Foundation
 
 class MockApi: WeatherApi {
     let locations = [
-        Location(id: 1, name: "Tokyo", longitude: 35.6584421, latitude: 139.7328635),
-        Location(id: 2, name: "Helsinki", longitude: 60.1697530, latitude: 24.9490830),
-        Location(id: 3, name: "New York", longitude: 40.7406905, latitude: -73.9938438),
-        Location(id: 4, name: "Amsterdam", longitude: 52.3650691, latitude: 4.9040238),
-        Location(id: 5, name: "Dubai", longitude: 25.092535, latitude: 55.1562243)
+        Location(id: 1, name: "Tokyo", longitude: 139.7328635, latitude: 35.6584421),
+        Location(id: 2, name: "Helsinki", longitude: 24.9490830, latitude: 60.1697530),
+        Location(id: 3, name: "New York", longitude: -73.9938438, latitude: 40.7406905),
+        Location(id: 4, name: "Amsterdam", longitude: 4.9040238, latitude: 52.3650691),
+        Location(id: 5, name: "Dubai", longitude: 55.1562243, latitude: 25.092535)
     ]
 
     var observations = [

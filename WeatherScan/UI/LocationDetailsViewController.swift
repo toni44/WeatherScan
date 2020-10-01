@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class LocationDetailsViewController: UIViewController, WeatherServiceDelegate {
     
@@ -20,6 +21,7 @@ class LocationDetailsViewController: UIViewController, WeatherServiceDelegate {
     @IBOutlet weak var observationTextFieldInstructionLabel: UILabel!
     
     var location: Location?
+    var currentLocation: CLLocation?
     weak var weatherService: WeatherService?
     private let validator = WeatherValidator()
     
@@ -60,26 +62,29 @@ class LocationDetailsViewController: UIViewController, WeatherServiceDelegate {
     }
     
     @objc func onAddObservationPressed() {
-        if let location = location,
-           let observationInput = addObservationTextField.text,
-           let floatValue = Float(observationInput) {
-            if validator.isValid(observation: floatValue) {
-                weatherService?.add(temperatureObservation: floatValue, for: location)
-                
-                addObservationTextField.resignFirstResponder()
-                addObservationTextField.text = ""
-                observationTextFieldInstructionLabel.text = ""
-                
-                update(addObservationTextField, borderColor: UIColor.lightGray.cgColor)
-                update(observationTextFieldInstructionLabel, textColor: UIColor.systemTeal)
-                observationTextFieldInstructionLabel.text = NSLocalizedString("temperature_submitted", comment: "")
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: { [weak self] in
-                    self?.observationTextFieldInstructionLabel.text = ""
-                })
-            } else {
-                showInvalidObservationMessage()
-            }
+        guard let location = location, let currentUserLocation = currentLocation, validator.isValid(userLocation: currentUserLocation, location: location) else {
+            showInvalidLocationMessage()
+            return
+        }
+        guard let observationInput = addObservationTextField.text, let floatValue = Float(observationInput) else {
+            showInvalidObservationMessage()
+            return
+        }
+        if validator.isValid(observation: floatValue),
+           validator.isValid(userLocation: currentUserLocation, location: location) {
+            weatherService?.add(temperatureObservation: floatValue, for: location)
+            
+            addObservationTextField.resignFirstResponder()
+            addObservationTextField.text = ""
+            observationTextFieldInstructionLabel.text = ""
+            
+            update(addObservationTextField, borderColor: UIColor.lightGray.cgColor)
+            update(observationTextFieldInstructionLabel, textColor: UIColor.systemTeal)
+            observationTextFieldInstructionLabel.text = NSLocalizedString("temperature_submitted", comment: "")
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: { [weak self] in
+                self?.observationTextFieldInstructionLabel.text = ""
+            })
         } else {
             showInvalidObservationMessage()
         }
@@ -89,6 +94,11 @@ class LocationDetailsViewController: UIViewController, WeatherServiceDelegate {
         update(observationTextFieldInstructionLabel, textColor: UIColor.red)
         observationTextFieldInstructionLabel.text = NSLocalizedString("invalid_temperature", comment: "")
         update(addObservationTextField, borderColor: UIColor.systemRed.cgColor)
+    }
+    
+    private func showInvalidLocationMessage() {
+        update(observationTextFieldInstructionLabel, textColor: UIColor.red)
+        observationTextFieldInstructionLabel.text = NSLocalizedString("invalid_location", comment: "")
     }
     
     private func update(_ view: UIView, borderColor: CGColor) {

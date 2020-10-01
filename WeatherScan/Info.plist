@@ -62,5 +62,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>WeatherScan uses the location to verify temperature validity</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>WeatherScan uses the location to verify temperature validity</string>
 </dict>
 </plist>

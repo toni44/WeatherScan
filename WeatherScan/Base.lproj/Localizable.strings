@@ -14,5 +14,6 @@
 "24h_min_temperature" = "24h min temperature";
 "temperature_submitted" = "Temperature submitted";
 "invalid_temperature" = "Invalid temperature, please check the value";
+"invalid_location" = "Your current location doesn't match the desired location";
 "send" = "Send";
 "cancel" = "Cancel";
